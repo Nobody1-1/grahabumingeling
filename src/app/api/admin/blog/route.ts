@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
+import { ApiError } from "@/lib/types";
 
 export async function GET() {
 	const rows = await query(
@@ -17,7 +18,7 @@ export async function POST(req: Request) {
 			[title, slug, excerpt || null, content || null, cover_image_url || null, published ? new Date() : null]
 		);
 		return NextResponse.json({ ok: true }, { status: 201 });
-	} catch (e: any) {
+	} catch (e: ApiError) {
 		return NextResponse.json({ message: e?.message || "Server error" }, { status: 500 });
 	}
 }

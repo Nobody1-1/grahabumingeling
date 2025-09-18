@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
+import { ApiError } from "@/lib/types";
 
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
 	try {
@@ -21,7 +22,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 			);
 		}
 		return NextResponse.json({ ok: true });
-	} catch (e: any) {
+	} catch (e: ApiError) {
 		return NextResponse.json({ message: e?.message || "Server error" }, { status: 500 });
 	}
 }
@@ -31,7 +32,7 @@ export async function DELETE(_req: Request, { params }: { params: { id: string }
 		const id = Number(params.id);
 		await query("DELETE FROM blog_posts WHERE id=?", [id]);
 		return NextResponse.json({ ok: true });
-	} catch (e: any) {
+	} catch (e: ApiError) {
 		return NextResponse.json({ message: e?.message || "Server error" }, { status: 500 });
 	}
 }
