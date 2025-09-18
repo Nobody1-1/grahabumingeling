@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { query } from "@/lib/db";
 import { ApiError } from "@/lib/types";
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {
 	try {
+		const params = await context.params;
 		const id = Number(params.id);
 		const { name, price, image_url, images, spec_bedrooms, spec_bathrooms, spec_parking, spec_plafon_pvc, akses_cor_beton } = await req.json();
 		const images_json = Array.isArray(images) ? JSON.stringify(images) : (typeof images === 'string' && images.trim().length > 0 ? JSON.stringify(images.split(/\r?\n|,\s*/).filter(Boolean)) : null);
@@ -17,8 +19,9 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 	}
 }
 
-export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_req: NextRequest, context: { params: Promise<{ id: string }> }) {
 	try {
+		const params = await context.params;
 		const id = Number(params.id);
 		await query("DELETE FROM house_types WHERE id=?", [id]);
 		return NextResponse.json({ ok: true });

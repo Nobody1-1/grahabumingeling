@@ -3,9 +3,10 @@ import { NextRequest } from "next/server";
 import { query } from "@/lib/db";
 import { ApiError } from "@/lib/types";
 
-export async function PUT(req: NextRequest, context: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {
 	try {
-		const id = Number(context.params.id);
+		const params = await context.params;
+		const id = Number(params.id);
 		const body = await req.json();
 		
 		// Handle publish/unpublish toggle
@@ -28,9 +29,10 @@ export async function PUT(req: NextRequest, context: { params: { id: string } })
 	}
 }
 
-export async function DELETE(_req: NextRequest, context: { params: { id: string } }) {
+export async function DELETE(_req: NextRequest, context: { params: Promise<{ id: string }> }) {
 	try {
-		const id = Number(context.params.id);
+		const params = await context.params;
+		const id = Number(params.id);
 		await query("DELETE FROM blog_posts WHERE id=?", [id]);
 		return NextResponse.json({ ok: true });
 	} catch (e: unknown) {
