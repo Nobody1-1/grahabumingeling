@@ -44,7 +44,7 @@ export async function POST(req: Request) {
 			]
 		);
 		return NextResponse.json({ ok: true }, { status: 201 });
-	} catch (e: ApiError) {
-		return NextResponse.json({ message: e?.message || "Server error" }, { status: 500 });
+	} catch (e: unknown) {
+		return NextResponse.json({ message: (e as Error)?.message || "Server error" }, { status: 500 });
 	}
 }

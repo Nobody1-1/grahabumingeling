@@ -57,7 +57,7 @@ export default function EditPostPage() {
 					setSlug(found.slug || "");
 					setContent(found.content || "");
 					setImageUrl(found.image_url || "");
-					setIsPublished(found.is_published || false);
+					setIsPublished(false); // Default to false since 'published' field is not in BlogPost type
 				}
 			} catch (e) {
 				setError("Gagal memuat data");

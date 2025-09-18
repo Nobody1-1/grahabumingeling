@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 import bcrypt from "bcryptjs";
+import { ApiError } from "@/lib/types";
 
 export async function POST(req: Request) {
 	try {
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
 		const password_hash = await bcrypt.hash(password, 10);
 		await query("INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, 'user')", [name, email, password_hash]);
 		return NextResponse.json({ message: "Registered" }, { status: 201 });
-	} catch (err: any) {
+	} catch (err: ApiError) {
 		const errMsg = typeof err?.message === "string" ? err.message : "Server error";
 		return NextResponse.json({ message: errMsg }, { status: 500 });
 	}
