@@ -27,7 +27,11 @@ export default function LoginPage() {
 			return;
 		}
 		// Check if user is admin and redirect accordingly
-		const userRole = (res as any)?.user?.role;
+		const updatedSession = await fetch("/api/auth/session").then((res) =>
+			res.json()
+		);
+
+		const userRole = updatedSession?.user?.role;
 		if (userRole === "admin") {
 			router.replace("/admin");
 		} else {

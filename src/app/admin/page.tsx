@@ -3,10 +3,11 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Home, FileText, Building, Users, Settings, LogOut } from "lucide-react";
+import { UserWithRole } from "@/lib/types";
 
 export default async function AdminPage() {
 	const session = await getServerSession(authOptions);
-	if (!session || (session.user as any)?.role !== "admin") {
+	if (!session || (session.user as UserWithRole)?.role !== "admin") {
 		redirect("/login");
 	}
 	return (

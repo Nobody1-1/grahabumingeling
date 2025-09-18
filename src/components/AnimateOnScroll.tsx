@@ -58,7 +58,25 @@ export default function AnimateOnScroll({
       ref={ref}
       initial="hidden"
       animate={controls}
-      variants={variants}
+      variants={{
+        hidden: {
+          opacity: 0,
+          y: animation === "slideUp" ? 50 : 0,
+          x: animation === "slideLeft" ? 50 : animation === "slideRight" ? -50 : 0,
+          scale: animation === "scale" ? 0.8 : 1,
+        },
+        visible: {
+          opacity: 1,
+          y: 0,
+          x: 0,
+          scale: 1,
+          transition: {
+            duration: duration,
+            delay: delay,
+            ease: [0.43, 0.13, 0.23, 0.96] // Improved easing curve for smoother animation
+          }
+        }
+      }}
       className={className}
     >
       {children}

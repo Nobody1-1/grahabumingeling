@@ -1,5 +1,7 @@
 "use client";
 
+"use client";
+
 import { MapPin, BadgeCheck, LayoutGrid, Route } from "lucide-react";
 import AnimateOnScroll from "./AnimateOnScroll";
 

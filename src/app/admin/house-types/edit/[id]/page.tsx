@@ -26,8 +26,22 @@ const [aksesCorBeton, setAksesCorBeton] = useState(false);
 			try {
 				setLoadingData(true);
 				const res = await fetch(`/api/admin/house-types`);
-				const all = await res.json();
-				const found = all.find((x: any) => String(x.id) === String(itemId));
+				
+				interface HouseType {
+					id: number;
+					name: string;
+					price: number;
+					image_url: string | null;
+					images_json: string | null;
+					spec_bedrooms: number;
+					spec_bathrooms: number;
+					spec_parking: number;
+					spec_plafon_pvc: number;
+					akses_cor_beton: number;
+				}
+				
+				const all = await res.json() as HouseType[];
+				const found = all.find((x: HouseType) => String(x.id) === String(itemId));
 				if (found) {
                     setName(found.name || "");
 					setPrice(found.price || "");

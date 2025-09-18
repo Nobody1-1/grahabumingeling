@@ -41,8 +41,17 @@ export default function EditPostPage() {
 			try {
 				setLoadingData(true);
 				const res = await fetch(`/api/admin/blog`);
-				const all = await res.json();
-				const found = all.find((p: any) => String(p.id) === String(postId));
+				
+				interface BlogPost {
+					id: number;
+					title: string;
+					slug: string;
+					content: string;
+					image_url: string | null;
+				}
+				
+				const all = await res.json() as BlogPost[];
+				const found = all.find((p: BlogPost) => String(p.id) === String(postId));
 				if (found) {
 					setTitle(found.title || "");
 					setSlug(found.slug || "");

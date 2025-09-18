@@ -39,7 +39,7 @@ export default async function ListingsSection() {
                                     let first = h.image_url || "/foto-rumah1.png";
                                     try {
                                         if (h.images_json) {
-                                            const arr = JSON.parse(h.images_json as any);
+                                            const arr = JSON.parse(h.images_json) as string[];
                                             if (Array.isArray(arr) && arr[0]) first = arr[0];
                                         }
                                     } catch {}
@@ -67,4 +67,4 @@ export default async function ListingsSection() {
 			</div>
 		</section>
 	);
-} 
+}

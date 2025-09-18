@@ -6,7 +6,15 @@ import { useSession, signOut } from "next-auth/react";
 export default function Navbar() {
 	const [open, setOpen] = useState(false);
 	const { data: session } = useSession();
-	const isAdmin = (session?.user as any)?.role === "admin";
+	
+	interface UserWithRole {
+		name?: string | null;
+		email?: string | null;
+		image?: string | null;
+		role?: string;
+	}
+	
+	const isAdmin = (session?.user as UserWithRole)?.role === "admin";
 	return (
 		<header className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur border-b border-black/5 dark:bg-black/40 dark:border-white/10">
 			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -59,4 +67,4 @@ export default function Navbar() {
 			)}
 		</header>
 	);
-} 
+}

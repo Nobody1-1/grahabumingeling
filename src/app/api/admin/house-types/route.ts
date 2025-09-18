@@ -1,8 +1,24 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
+import { ApiError } from "@/lib/types";
+
+interface HouseType {
+	id: number;
+	name: string;
+	price: number;
+	image_url: string | null;
+	images_json: string | null;
+	spec_bedrooms: number;
+	spec_bathrooms: number;
+	spec_parking: number;
+	spec_plafon_pvc: number;
+	akses_cor_beton: number;
+	created_at: string;
+	updated_at: string;
+}
 
 export async function GET() {
-	const rows = await query(
+	const rows = await query<HouseType>(
 		"SELECT id, name, price, image_url, images_json, spec_bedrooms, spec_bathrooms, spec_parking, spec_plafon_pvc, akses_cor_beton, created_at, updated_at FROM house_types ORDER BY created_at DESC LIMIT 100"
 	);
 	return NextResponse.json(rows);
@@ -28,7 +44,7 @@ export async function POST(req: Request) {
 			]
 		);
 		return NextResponse.json({ ok: true }, { status: 201 });
-	} catch (e: any) {
+	} catch (e: ApiError) {
 		return NextResponse.json({ message: e?.message || "Server error" }, { status: 500 });
 	}
 }
