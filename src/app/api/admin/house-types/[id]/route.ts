@@ -12,8 +12,8 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 			[name, Number(price), image_url || null, images_json, Number(spec_bedrooms || 0), Number(spec_bathrooms || 0), Number(spec_parking || 0), spec_plafon_pvc ? 1 : 0, akses_cor_beton ? 1 : 0, id]
 		);
 		return NextResponse.json({ ok: true });
-	} catch (e: ApiError) {
-		return NextResponse.json({ message: e?.message || "Server error" }, { status: 500 });
+	} catch (e: unknown) {
+		return NextResponse.json({ message: (e as Error)?.message || "Server error" }, { status: 500 });
 	}
 }
 
@@ -22,7 +22,7 @@ export async function DELETE(_req: Request, { params }: { params: { id: string }
 		const id = Number(params.id);
 		await query("DELETE FROM house_types WHERE id=?", [id]);
 		return NextResponse.json({ ok: true });
-	} catch (e: ApiError) {
-		return NextResponse.json({ message: e?.message || "Server error" }, { status: 500 });
+	} catch (e: unknown) {
+		return NextResponse.json({ message: (e as Error)?.message || "Server error" }, { status: 500 });
 	}
 }

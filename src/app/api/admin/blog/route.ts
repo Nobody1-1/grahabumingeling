@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 			[title, slug, excerpt || null, content || null, cover_image_url || null, published ? new Date() : null]
 		);
 		return NextResponse.json({ ok: true }, { status: 201 });
-	} catch (e: ApiError) {
-		return NextResponse.json({ message: e?.message || "Server error" }, { status: 500 });
+	} catch (e: unknown) {
+		return NextResponse.json({ message: (e as Error)?.message || "Server error" }, { status: 500 });
 	}
 }

@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { query } from "@/lib/db";
 import { ApiError } from "@/lib/types";
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context: { params: { id: string } }) {
 	try {
-		const id = Number(params.id);
+		const id = Number(context.params.id);
 		const body = await req.json();
 		
 		// Handle publish/unpublish toggle
@@ -22,17 +23,17 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 			);
 		}
 		return NextResponse.json({ ok: true });
-	} catch (e: ApiError) {
-		return NextResponse.json({ message: e?.message || "Server error" }, { status: 500 });
+	} catch (e: unknown) {
+		return NextResponse.json({ message: (e as Error)?.message || "Server error" }, { status: 500 });
 	}
 }
 
-export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_req: NextRequest, context: { params: { id: string } }) {
 	try {
-		const id = Number(params.id);
+		const id = Number(context.params.id);
 		await query("DELETE FROM blog_posts WHERE id=?", [id]);
 		return NextResponse.json({ ok: true });
-	} catch (e: ApiError) {
-		return NextResponse.json({ message: e?.message || "Server error" }, { status: 500 });
+	} catch (e: unknown) {
+		return NextResponse.json({ message: (e as Error)?.message || "Server error" }, { status: 500 });
 	}
 }
